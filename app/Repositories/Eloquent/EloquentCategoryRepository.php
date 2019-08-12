@@ -66,4 +66,68 @@ class EloquentCategoryRepository extends AbstractRepository implements CategoryR
         }
         return false;
     }
+    /**
+     * @Des function create country, type, category and rule in one action
+     * @date 12 Aug 2019
+     * @param $arrData
+     * @return array
+     */
+    public function createAll($arrData) {
+        $arrResult = [];
+        $isCountryNew = false;
+        // check country is existing
+        $country = Country::where('name',$arrData['country_name'])->first();
+        if(!$country) {
+            $country = Country::create(['name'=>$arrData['country_name']]);
+            $isCountryNew = true;
+        }
+        $arrResult['country'] = $country;
+        if($country) {
+            // check type existing
+            $isTypeNew = false;
+            $type = null;
+            if($isCountryNew === false) {
+                $type = Type::where('name',$arrData['type_name'])->where('country_id',$country->id)->first();
+            }
+            if(!$type) {
+                // create type
+                $type = Type::create(['name'=>$arrData['type_name'],'country_id'=>$country->id]);
+                $isTypeNew = true;
+            }
+            if($type) {
+                $arrResult['type'] = $type;
+                if(isset($arrData['category_name'])) {
+                    $isCatNew = false;
+                    $category = null;
+                    if($isTypeNew === false) {
+                        $category = Category::where('name',$arrData['category_name'])->where('type_id',$type->id)->first();
+                    }
+                    if(!$category) {
+                        $category = Category::create(['name'=>$arrData['category_name'],'type_id'=>$type->id]);
+                        $isCatNew = true;
+                    }
+                    $arrResult['category'] = $category;
+                    if(isset($arrData['rules']) && count($arrData['rules']) > 0) {
+                        $arrCheckRule = [];
+                        // check rule id is added or not to current category
+                        if($isCatNew === false) {
+                            $arrCheckRule = CategoryRule::where('category_id',$category->id)->pluck('rule_id')->toArray();
+                            //dd($arrCheckRule);
+                        }
+                        $arrRuleCat = [];
+                        foreach ($arrData['rules'] as $key=>$ruleId) {
+                            if(!in_array($ruleId,$arrCheckRule)) {
+                                $arrRuleCat[] = ['category_id'=>$category->id,'rule_id'=>$ruleId];
+                            }
+                        }
+                        if($arrRuleCat) {
+                            CategoryRule::insert($arrRuleCat);
+                        }
+                        $arrResult['category_rule'] = $arrRuleCat;
+                    }
+                }
+            }
+        }
+        return $arrResult;
+    }
 }

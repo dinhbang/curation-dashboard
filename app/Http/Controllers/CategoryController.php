@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Category\CreateCategoryRequest;
 use App\Http\Requests\Category\UpdateCategoryRequest;
-use App\Http\Requests\Request;
-use App\Http\Requests\RequestAdmin;
 use App\Models\Category;
-use App\Models\CategoryRule;
+use App\Http\Requests\Category\CreateAllRequest;
 use App\Http\Requests\Category\CreateCategoryRuleRequest;
 use Exception;
 use App\Repositories\Eloquent\EloquentCategoryRepository;
@@ -30,11 +28,7 @@ class CategoryController extends JsonController
         try {
             $category = $this->categoryRepo->create($request->all());
             if($category) {
-                /**
-                 * return all rule after save new rule
-                 */
-                $rules = $this->categoryRepo->All();
-                return $this->customJson($rules,200);
+                return $this->customJson($category,200);
             }
             return $this->customJson(['error'=>'Category is not added'],500);
         } catch (Exception $e) {
@@ -124,4 +118,22 @@ class CategoryController extends JsonController
         }
 
     }
+    /**
+     * @des create country, type, category and add rule to category in one action
+     * @des 12 Aug 2019
+     * @author Bang Truong
+     * @param CreateAllRequest $request
+     */
+    public function storeAll(CreateAllRequest $request) {
+        try {
+            $arrResult = $this->categoryRepo->createAll($request->all());
+            if($arrResult) {
+                return $this->customJson($arrResult,200);
+            }
+            return $this->customJson(['error'=>'Country is not added'],500);
+        } catch (Exception $e) {
+            return $this->customJson(['error'=>'System has error'],500);
+        }
+    }
+
 }

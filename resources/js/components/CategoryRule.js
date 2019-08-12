@@ -117,12 +117,14 @@ export default {
                 });
                 this.rulesAdded.push(this.rules[index]);
 
-                this.postData(storeRule, {
-                    category_id: this.category.id,
-                    rule_id: e.target.value
-                }, function (res) {
-                    obj.initData([]);
-                });
+                if(this.category.id > 0) {
+                    this.postData(storeRule, {
+                        category_id: this.category.id,
+                        rule_id: e.target.value
+                    }, function (res) {
+                        obj.initData([]);
+                    });
+                }
             }
         },
 
@@ -447,6 +449,46 @@ export default {
                     }
                     break;
             }
+        },
+
+        isSaveAll: function () {
+            /*const obj = this;
+            if(!this.type.name || !this.category.name) {
+                return  false;
+            }
+
+            let index = -1;
+            index = _.findIndex(this.types, function (o) {
+                return o.name == obj.type.name;
+            });
+
+            if(index > -1) {
+                return  false;
+            }
+
+            index = _.findIndex(this.categories, function (o) {
+                return o.name == obj.category.name;
+            });
+
+            if(index > -1) {
+                return  false;
+            }*/
+
+            return !(this.country.id) && this.country.name && !(this.type.id) && this.type.name && !this.category.id && this.category.name;
+        },
+
+        addNewAll: function () {
+            const obj = this;
+            const ruleIds = _.map(obj.rulesAdded, 'id');
+            console.log(ruleIds);
+            obj.postData(storeAll, {
+                country_name: obj.country.name,
+                type_name: obj.type.name,
+                category_name: obj.category.name,
+                rules: ruleIds
+            }, function (res) {
+                obj.initData([]);
+            });
         },
 
         getData: function (action, data, callback) {

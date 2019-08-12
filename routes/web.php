@@ -56,9 +56,10 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::post('/',['as'=>'store','uses'=>'CategoryController@store']);
         Route::post('/add-rule',['as'=>'storeRule','uses'=>'CategoryController@storeRule']);
+        Route::post('/add-all',['as'=>'storeAll','uses'=>'CategoryController@storeAll']);
         Route::post('/{category}',['as'=>'update','uses'=>'CategoryController@update']);
         Route::post('/del/{category}',['as'=>'delete','uses'=>'CategoryController@delete']);
-        Route::post('/del-rule/{category}',['as'=>'deleteRule','uses'=>'CategoryController@deleteRule']);
+        Route::post('/del-rule/{category}',['as'=>'deleteRule','uses'=>'CaegoryController@deleteRule']);
     });
     //die("abc");
 

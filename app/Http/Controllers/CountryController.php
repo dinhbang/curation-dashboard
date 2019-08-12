@@ -5,7 +5,6 @@ use App\Models\Country;
 use App\Repositories\Eloquent\EloquentCountryRepository;
 use App\Http\Requests\Country\CreateCountryRequest;
 use App\Http\Requests\Country\UpdateCountryRequest;
-use Illuminate\Support\Facades\Request;
 use Exception;
 
 class CountryController extends JsonController
@@ -36,11 +35,7 @@ class CountryController extends JsonController
         try {
             $country = $this->countryRepo->create($request->all());
             if($country) {
-                $countries = $this->countryRepo->getAll();
-                /**
-                 * return all country after save new country
-                 */
-                return $this->customJson($countries,200);
+                return $this->customJson($country,200);
             }
             return $this->customJson(['error'=>'Country is not added'],500);
         } catch (Exception $e) {

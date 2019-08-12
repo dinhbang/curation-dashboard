@@ -129,7 +129,7 @@
                                 <div class="col">
                                     <select class="form-control" v-on:change="ruleSelect">
                                         <option>Choose rule.</option>
-                                        <option v-if="category && category.id > 0" v-for="rule in rules" v-bind:value="rule.id">{{rule.name}}</option>
+                                        <option v-if="category && category.name" v-for="rule in rules" v-bind:value="rule.id">{{rule.name}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -146,7 +146,7 @@
                                     <th scope="col">Action</th>
                                 </tr>
                                 </thead>
-                                <tbody v-if="category && category.id > 0">
+                                <tbody v-if="category && category.name">
                                 <tr v-for="rule in rulesAdded">
                                     <th scope="row">{{ rule.id}}</th>
                                     <td>{{ rule.name }}</td>
@@ -155,11 +155,10 @@
                                         <button type="button" v-on:click="delRulesAdded(rule)" class="btn btn-danger">Delete</button>
                                     </td>
                                 </tr>
-
-
-
                                 </tbody>
                             </table>
+
+                            <button type="button" v-if="isSaveAll()" class="btn btn-success" v-on:click="addNewAll">Add New All</button>
                         </div>
                     </div>
                     <div class="col-md-7">
@@ -188,7 +187,6 @@
                                     <button v-if="idx ==0 || category.name != categoryRules[idx-1].name" type="button" class="btn btn-danger" v-on:click="delCategoryByRule(category)">Delete</button>
                                 </td>
                             </tr>
-
                             </tbody>
                         </table>
                     </div>

@@ -29,11 +29,7 @@ class TypeController extends JsonController
         try {
             $type = $this->typeRepo->create($request->all());
             if($type) {
-                /**
-                 * return all types from countryID
-                 */
-                $types = $this->typeRepo->getList($type->country_id);
-                return $this->customJson($types,200);
+                return $this->customJson($type,200);
             }
             return $this->customJson(['error'=>'Country is not added'],500);
         } catch (Exception $e) {
