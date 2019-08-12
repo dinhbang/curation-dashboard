@@ -1,0 +1,23 @@
+// Variables
+@import 'variables';
+
+body {
+  font-size: 12px !important;
+}
+
+input, textarea, button, optgroup, option {
+  font-size: 12px !important;
+}
+
+select {
+  //height: calc(1.1em + .75rem + 2px) !important;
+  font-size: 12px !important;
+}
+
+.table td, .table th {
+  padding: .38rem;
+}
+
+.card-body .col-md-5 {
+  border-right: 1px solid #c1c1c1 !important;
+}

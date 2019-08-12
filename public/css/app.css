@@ -1,0 +1,25 @@
+body {
+  font-size: 12px !important;
+}
+
+input,
+textarea,
+button,
+optgroup,
+option {
+  font-size: 12px !important;
+}
+
+select {
+  font-size: 12px !important;
+}
+
+.table td,
+.table th {
+  padding: 0.38rem;
+}
+
+.card-body .col-md-5 {
+  border-right: 1px solid #c1c1c1 !important;
+}
+
